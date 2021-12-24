@@ -1,23 +1,19 @@
 import { ScrollView, StyleSheet } from 'react-native';
-import { useEffect, useState } from "react";
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Post from "./post";
 import React from "react";
+import { fetchPostsRequest } from '../redux/actions/postsActions';
+import { selectPosts } from '../redux/selectors/postsSelectors'
+import { useEffect } from 'react';
 
 const List = () => {
-    const [posts, setPosts] = useState([])
-
-    const fetchPosts = () => {
-        axios.get('https://jsonplaceholder.typicode.com/posts')
-            .then(response => {
-                setPosts(response.data)
-            })
-    }
-
+    const posts = useSelector(selectPosts)
+    const dispatch = useDispatch()
     
     useEffect(() => {
-        fetchPosts()
-    }, [])
+		dispatch(fetchPostsRequest());
+	}, [dispatch]);
 
     return (
       <ScrollView style={styles}>
